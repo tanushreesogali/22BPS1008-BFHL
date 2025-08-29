@@ -10,7 +10,20 @@ def check_if_integer(value_str):
         return False
 
 class handler(BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+    
     def do_POST(self):
+        # Check if the path is /bfhl
+        if self.path != '/bfhl':
+            self.send_response(404)
+            self.end_headers()
+            return
+            
         try:
             content_length_val = int(self.headers['Content-Length'])
             post_data_content = self.rfile.read(content_length_val)
@@ -68,8 +81,6 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
-            self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
-            self.send_header('Access-Control-Allow-Headers', 'Content-Type')
             self.end_headers()
             self.wfile.write(json.dumps(response_data).encode('utf-8'))
             
