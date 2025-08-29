@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "src": "/bfhl",
+      "methods": ["POST", "OPTIONS"],
+      "dest": "/app.py"
+    }
+  ]
+}
